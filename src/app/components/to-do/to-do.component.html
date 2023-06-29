@@ -1,0 +1,10 @@
+<div class="todo-card">
+    <div class="todo-head">
+        <input type="checkbox" name="" id="" [checked]="todo.completed" (click)="completedTodo(todo.id)">
+        <span class="todo-name">{{ todo.name }}</span>
+        <button (click)="deleteTodo(todo.id)">X</button>
+    </div>
+    <div class="todo-content">
+        <p class="todo-desc">{{ todo.description }}</p>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<h1>Hello World!</h1>
+
+<p>This is a Component Message: {{ getMessage("Whats'up") }}</p>
+
+<input type="text" (keyup.enter)="createTodo($event)" [placeholder]="getMessage('Que quieres Hacer?')">
+
+<div class="todo-list-container">
+  <app-to-do [todo]="todo" *ngFor="let todo of todoList"></app-to-do>
+</div>
