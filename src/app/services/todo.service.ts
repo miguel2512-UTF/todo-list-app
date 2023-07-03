@@ -1,46 +1,51 @@
 import { Injectable } from '@angular/core';
 import { Todo, TodoList } from '../interfaces/todo.interface';
 
-let todoMock: TodoList = [
-  {
-    id: 1,
-    name: "First ToDo",
-    description: "This is a description",
-    completed: false
-  },
-  {
-    id: 2,
-    name: "Second ToDo",
-    description: "This is a description",
-    completed: true
+const getLocalStorageTodoList = () => {
+  const todoList = localStorage.getItem('todoList')
+
+  if (typeof todoList === 'string') {
+    return JSON.parse(todoList) as TodoList
   }
-]
+  
+  localStorage.setItem('todoList', JSON.stringify([]))
+  return []
+}
+
+const saveTodoList = (todoList: Array<Todo>) => {
+  localStorage.setItem('todoList', JSON.stringify(todoList))
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
 
+  private todoList = getLocalStorageTodoList()
+
   constructor() { }
 
   getTodoList(): Todo[] {
-    return todoMock
+    return this.todoList
   }
 
-  createTodo(todo: Todo){
-    todoMock.push(todo)
+  createTodo(todo: Todo) {
+    this.todoList.push(todo)
+    saveTodoList(this.todoList)
   }
 
   changeTodoCompleted(id: number) {
-    todoMock.map(todo => {
+    this.todoList.map(todo => {
       if (todo.id === id) {
         todo.completed = todo.completed ? false : true
       }
     })
+    saveTodoList(this.todoList)
   }
 
   deleteTodo(id: number) {
-    const index = todoMock.findIndex(todo => todo.id === id)
-    todoMock.splice(index, 1)
+    const index = this.todoList.findIndex(todo => todo.id === id)
+    this.todoList.splice(index, 1)
+    saveTodoList(this.todoList)
   }
 }
