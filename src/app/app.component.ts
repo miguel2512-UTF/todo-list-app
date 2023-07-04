@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TodoList } from './interfaces/todo.interface';
 import { TodoService } from './services/todo.service';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
@@ -8,7 +8,7 @@ import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationErr
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'todo-list-app';
   loading: boolean = false
 
@@ -32,7 +32,15 @@ export class AppComponent {
     return message
   }
 
-  todoList = this.todoService.getTodoList();
+  todoList: TodoList = []
+
+  ngOnInit(): void {
+    this.getData()
+  }
+
+  getData() {
+    this.todoService.getTodoList().subscribe(data => this.todoList = data)
+  }
 
   createTodo(event: Event){
     const element = event.currentTarget as HTMLInputElement

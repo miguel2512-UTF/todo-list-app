@@ -15,11 +15,9 @@ export class ToDoComponent {
   
   completedTodo(id: number) {
     this.todoService.changeTodoCompleted(id)
-    console.log(this.todoService.getTodoList());
   }
 
   deleteTodo(id: number) {
     this.todoService.deleteTodo(id)
-    console.log(this.todoService.getTodoList());
   }
 }

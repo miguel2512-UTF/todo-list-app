@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Todo, TodoList } from '../interfaces/todo.interface';
+import { Observable, of, map } from 'rxjs';
 
 const getLocalStorageTodoList = () => {
   const todoList = localStorage.getItem('todoList')
 
   if (typeof todoList === 'string') {
-    return JSON.parse(todoList) as TodoList
+    return of(JSON.parse(todoList) as TodoList)
   }
-  
+
   localStorage.setItem('todoList', JSON.stringify([]))
-  return []
+  return of([])
 }
 
 const saveTodoList = (todoList: Array<Todo>) => {
@@ -25,27 +26,42 @@ export class TodoService {
 
   constructor() { }
 
-  getTodoList(): Todo[] {
+  getTodoList(): Observable<Todo[]> {
     return this.todoList
   }
 
   createTodo(todo: Todo) {
-    this.todoList.push(todo)
-    saveTodoList(this.todoList)
+    this.todoList.subscribe(
+      data => {
+        data.push(todo)
+        saveTodoList(data)
+      }
+    )
+    .unsubscribe()
   }
 
   changeTodoCompleted(id: number) {
-    this.todoList.map(todo => {
-      if (todo.id === id) {
-        todo.completed = todo.completed ? false : true
+    this.todoList.subscribe(
+      data => {
+        data.map(todo => {
+          if (todo.id === id) {
+            todo.completed = todo.completed ? false : true
+          }
+        })
+        saveTodoList(data)
       }
-    })
-    saveTodoList(this.todoList)
+    )
+    .unsubscribe()
   }
 
   deleteTodo(id: number) {
-    const index = this.todoList.findIndex(todo => todo.id === id)
-    this.todoList.splice(index, 1)
-    saveTodoList(this.todoList)
+    this.todoList.subscribe(
+      data => {
+        const index = data.findIndex(todo => todo.id === id)
+        data.splice(index, 1)
+        saveTodoList(data)
+      }
+    )
+    .unsubscribe()
   }
 }
