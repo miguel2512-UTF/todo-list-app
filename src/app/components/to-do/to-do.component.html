@@ -1,8 +1,10 @@
-<div class="todo-card">
-    <div class="todo-head">
-        <input type="checkbox" name="" id="" [checked]="todo.completed" (click)="completedTodo(todo.id)">
-        <span class="todo-name">{{ todo.name }}</span>
-        <button (click)="deleteTodo(todo.id)">X</button>
+<div class="flex flex-col w-full bg-white py-4 px-4 my-1 shadow">
+    <div class="flex justify-between items-center">
+        <div class="flex justify-center items-center">
+            <input class="appearance-none m-[0] bg-white text-current w-[1.15rem] h-[1.15rem] border-[0.15rem] border-solid border-current rounded-[0.15rem] before:content-[''] before:w-[.65rem] before:h-[.65rem] before:bg-indigo-500 before:origin-bottom-left before:[clip-path:polygon(14%_44%,_0_65%,_50%_100%,_100%_16%,_80%_0%,_43%_62%)] before:scale-0 before:transition-all checked:before:scale-[1] grid place-content-center" type="checkbox" name="" id="" [checked]="todo.completed" (click)="completedTodo(todo.id)">
+            <span class="mx-4">{{ todo.name }}</span>
+        </div>
+        <button class="py-2 px-2 bg-indigo-500 rounded text-white font-bold hover:bg-indigo-700 transition-colors" (click)="deleteTodo($event, todo.id)"><trash-icon [size]="20" color="#fff"/></button>
     </div>
     <div class="todo-content">
         <p class="todo-desc">{{ todo.description }}</p>

@@ -1,11 +1,19 @@
-<h1>Hello World!</h1>
-
-<p>This is a Component Message: {{ getMessage("Whats'up") }}</p>
-
-<input type="text" (keyup.enter)="createTodo($event)" [placeholder]="getMessage('Que quieres Hacer?')">
-
-<div class="todo-list-container">
-  <app-to-do [todo]="todo" *ngFor="let todo of todoList"></app-to-do>
+<main class="min-h-screen grid place-content-center bg-gray-50">
+  <section class="flex flex-col desktop:w-96 mobile:w-full">
+    <h1 class="text-5xl font-bold w-full my-6 text-center">
+      Todo App
+    </h1>
+    
+    <div class="flex my-2">
+      <input class="border border-solid border-indigo-500 rounded-l w-full px-4 py-2 outline-none placeholder:text-ellipsis" type="text" (keyup.enter)="createTodo($event)" (keyup)="checkInputValue($event)" [placeholder]="getMessage('¿What do you want to do?')" id="todo">
+      <button class="py-1 px-3 h-full bg-indigo-500 rounded-r text-white font-bold hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed" (click)="sendInputData()" [disabled]="isNullInputValue">+</button>
+    </div>
+    
+    <div class="flex flex-col my-2 overflow-y-auto overflow-x-hidden h-96">
+      <app-to-do [todo]="todo" *ngFor="let todo of todoList"></app-to-do>
+    </div>    
+  </section>
+</main>
+<div [ngClass]="!loading ? 'opacity-0 -z-10' : 'z-10'" class="fixed top-0 left-0 h-screen w-screen bg-indigo-500 grid place-content-center transition-all">
+  <loading-icon color="white" [size]="45"/>
 </div>
-
-<div style="background: red; height: 50px; width: 50px;" *ngIf="loading"></div>

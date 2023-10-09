@@ -4,8 +4,7 @@ import { TodoService } from 'src/app/services/todo.service';
 
 @Component({
   selector: 'app-to-do',
-  templateUrl: './to-do.component.html',
-  styleUrls: ['./to-do.component.sass']
+  templateUrl: './to-do.component.html'
 })
 
 export class ToDoComponent {
@@ -17,7 +16,11 @@ export class ToDoComponent {
     this.todoService.changeTodoCompleted(id)
   }
 
-  deleteTodo(id: number) {
-    this.todoService.deleteTodo(id)
+  deleteTodo(event: Event, id: number) {
+    const todo = event.currentTarget as HTMLElement
+    todo.parentElement?.parentElement?.classList.add("animate-remove")
+    setTimeout(() => {
+      this.todoService.deleteTodo(id)
+    }, 500)
   }
 }

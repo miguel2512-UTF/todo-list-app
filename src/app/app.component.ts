@@ -5,12 +5,12 @@ import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationErr
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-  title = 'todo-list-app';
+  title = 'todo-list-app'
   loading: boolean = false
+  isNullInputValue = true;
 
   constructor(private router: Router){
     this.router.events.subscribe(event => {
@@ -44,6 +44,34 @@ export class AppComponent implements OnInit {
 
   createTodo(event: Event){
     const element = event.currentTarget as HTMLInputElement
+
+    if (!element.value || element.value.replace(/\s/g,"") == "") return
+
+    const todo = {
+      id: this.todoList.length + 1,
+      name: element.value,
+      description: "",
+      completed: false
+    }
+    this.todoService.createTodo(todo)
+  }
+
+  checkInputValue(event: Event) {
+    const element = event.currentTarget as HTMLInputElement
+    if (element.value && element.value.replace(/\s/g, "") != "") {
+      this.isNullInputValue = false
+    } else {
+      this.isNullInputValue = true
+    }
+  }
+
+  sendInputData() {
+    const element = document.getElementById("todo") as HTMLInputElement
+
+    if (element == null) return
+
+    if (!element.value || element.value.replace(/\s/g,"") == "") return
+
     const todo = {
       id: this.todoList.length + 1,
       name: element.value,
